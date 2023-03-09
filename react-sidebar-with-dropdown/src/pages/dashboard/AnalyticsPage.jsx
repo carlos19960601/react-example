@@ -1,0 +1,5 @@
+const AnalyticsPage = (props) => {
+  return <div>AnalyticsPage</div>;
+};
+
+export default AnalyticsPage;
