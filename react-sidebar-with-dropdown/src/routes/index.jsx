@@ -1,5 +1,6 @@
 import { Route } from "react-router-dom";
 import appRoutes from "./appRoutes";
+import PageWrapper from "../components/layout/PageWrapper";
 
 const generateRoute = (routes) => {
   return routes.map((route, index) =>
