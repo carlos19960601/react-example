@@ -1,0 +1,11 @@
+{
+  "name": "@blocksuit/store",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./src/*": "./src/*.js",
+    ".": "./src/index.js"
+  }
+}

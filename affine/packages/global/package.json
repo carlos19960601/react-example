@@ -1,0 +1,9 @@
+{
+  "name": "@blocksuite/global",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./utils": "./src/utils.js"
+  }
+}

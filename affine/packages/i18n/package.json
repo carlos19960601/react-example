@@ -1,0 +1,11 @@
+{
+  "name": "@affine/i18n",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "i18next": "^22.4.11",
+    "next-i18next": "^13.2.2",
+    "react-i18next": "^12.2.0"
+  }
+}
