@@ -1,5 +1,5 @@
 {
-  "name": "@blocksuit/store",
+  "name": "@blocksuite/store",
   "version": "1.0.0",
   "main": "src/index.js",
   "license": "MIT",
@@ -7,5 +7,15 @@
   "exports": {
     "./src/*": "./src/*.js",
     ".": "./src/index.js"
+  },
+  "dependencies": {
+    "y-protocols": "^1.0.5",
+    "y-webrtc": "^10.2.4"
+  },
+  "peerDependencies": {
+    "yjs": "^13"
+  },
+  "devDependencies": {
+    "yjs": "^13.5.50"
   }
 }

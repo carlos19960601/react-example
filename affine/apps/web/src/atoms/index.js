@@ -1,4 +1,4 @@
-import { assertExists } from "@blocksuit/store";
+import { assertExists } from "@blocksuite/store";
 import { atom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { WorkspacePlugins } from "../plugins";
