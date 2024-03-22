@@ -1,0 +1,8 @@
+{
+  "name": "penx",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter web dev"
+  },
+  "packageManager": "pnpm@8.14.2"
+}

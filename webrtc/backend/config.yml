@@ -1,0 +1,10 @@
+server:
+  softwareName: "WebRTCNutsBolts"
+  udp:
+    singlePort: 15000
+    dockerHostIp: ""
+  signaling:
+    wsPort: 8081
+  stunServerAddr: "stun.l.google.com:19302"
+  domainName: "webrtcnutsbolts-notexists.com"
+  requestAudio: false
