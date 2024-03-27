@@ -2,5 +2,8 @@
   "Tool": {
     "openVideo": "Open Video",
     "openSub": "Open Sub"
+  },
+  "Subtitle": {
+    "subText": "Subtitle Text"
   }
 }

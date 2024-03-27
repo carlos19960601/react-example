@@ -21,8 +21,11 @@ const VideoWrap = memo(
     useEffect(() => {
       setPlayer($video.current);
       const updateState = () => {
-        setPlaying(isPlaying($video.current!));
-        setCurrentTime($video.current!.currentTime);
+        if ($video) {
+          setPlaying(isPlaying($video.current!));
+          setCurrentTime($video.current!.currentTime);
+        }
+
         window.requestAnimationFrame(updateState);
       };
       updateState();

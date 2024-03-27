@@ -2,5 +2,8 @@
   "Tool": {
     "openVideo": "打开视频",
     "openSub": "打开字幕"
+  },
+  "Subtitle": {
+    "subText": "字幕文本"
   }
 }

@@ -11,13 +11,16 @@
   "dependencies": {
     "clsx": "^2.1.0",
     "duration-time-conversion": "^1.0.6",
+    "lodash": "^4.17.21",
     "next": "14.1.4",
     "next-intl": "^3.9.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-virtualized": "^9.22.5"
+    "react-virtualized": "^9.22.5",
+    "wfplayer": "^2.2.7"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

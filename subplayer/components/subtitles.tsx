@@ -1,11 +1,12 @@
 "use client";
 
+import Sub from "@/libs/sub";
 import clsx from "clsx";
 import { useState } from "react";
 import { Table } from "react-virtualized";
 
 type Props = {
-  subtitles: Array<string>;
+  subtitles: Array<Sub>;
   className?: string;
 };
 
