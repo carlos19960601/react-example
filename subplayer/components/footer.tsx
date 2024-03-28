@@ -15,17 +15,17 @@ import WFPlayer from "wfplayer";
 import clamp from "lodash/clamp";
 import Metronome from "./metronome";
 import Sub from "@/libs/sub";
+import Timeline from "./timeline";
 
 interface Props {
   className?: string;
   player: HTMLVideoElement | null;
   currentTime: number;
-  setWaveform: Dispatch<SetStateAction<WFPlayer>>;
-  waveform: WFPlayer;
+  setWaveform: Dispatch<SetStateAction<WFPlayer | undefined>>;
+  waveform: WFPlayer | undefined;
   playing: boolean;
   addSub: (index: number, sub: Sub) => void;
   newSub: (item: { start: number; end: number; text: string }) => Sub;
-  setRender: Dispatch<SetStateAction<RenderProps>>;
   subtitles: Sub[];
 }
 
@@ -52,9 +52,10 @@ const Footer = ({ className, player, ...restProps }: Props) => {
         <>
           <Progress {...restProps} player={player} />
           <Duration {...restProps} player={player} />
-          <Waveform {...restProps} player={player} />
+          <Waveform {...restProps} player={player} setRender={setRender} />
           <Grab {...restProps} player={player} />
           <Metronome {...restProps} player={player} render={render} />
+          <Timeline {...restProps} render={render} player={player} />
         </>
       )}
     </div>
@@ -85,7 +86,7 @@ const Duration = (props: DurationProps) => {
 interface ProgressProps {
   currentTime: number;
   player: HTMLVideoElement;
-  waveform: WFPlayer;
+  waveform: WFPlayer | undefined;
 }
 
 const Progress = (props: ProgressProps) => {
@@ -95,7 +96,7 @@ const Progress = (props: ProgressProps) => {
       const currentTime =
         (e.pageX / document.body.clientWidth) * props.player.duration;
       props.player.currentTime = currentTime;
-      props.waveform.seek(currentTime);
+      props.waveform?.seek(currentTime);
     },
     [props]
   );
@@ -113,7 +114,7 @@ const Progress = (props: ProgressProps) => {
 interface WaveformProps {
   currentTime: number;
   player: HTMLVideoElement;
-  setWaveform: Dispatch<SetStateAction<WFPlayer>>;
+  setWaveform: Dispatch<SetStateAction<WFPlayer | undefined>>;
   setRender: Dispatch<SetStateAction<RenderProps>>;
 }
 
@@ -161,7 +162,7 @@ const Waveform = memo(
 interface GrabProps {
   currentTime: number;
   player: HTMLVideoElement;
-  waveform: WFPlayer;
+  waveform: WFPlayer | undefined;
 }
 
 const Grab = (props: GrabProps) => {

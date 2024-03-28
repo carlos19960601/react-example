@@ -8,10 +8,10 @@ export default class Sub {
     text: string;
     text2?: string;
 
-    constructor(obj: { start: number, end: number, text: string, text2?: string }) {
-        this.start = obj.start;
-        this.end = obj.end;
-        this.text = obj.text;
+    constructor(obj: Partial<Sub>) {
+        this.start = obj.start ?? 0;
+        this.end = obj.end ?? 0;
+        this.text = obj.text ?? "";
         this.text2 = obj.text2;
     }
 
@@ -19,7 +19,7 @@ export default class Sub {
         return this.startTime >= 0 && this.endTime >= 0 && this.startTime < this.endTime;
     }
 
-    get clone() {
+    get clone(): Sub {
         return new Sub(this);
     }
 

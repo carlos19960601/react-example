@@ -95,7 +95,7 @@ const Metronome = ({
     setIsDroging(false);
     setDrogStartTime(0);
     setDrogEndTime(0);
-  }, []);
+  }, [isDroging, drogStartTime, drogEndTime, subtitles, addSub, newSub]);
 
   useEffect(() => {
     document.addEventListener("mouseup", onDocumentMouseUp);
