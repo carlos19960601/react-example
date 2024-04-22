@@ -104,7 +104,7 @@ const Metronome = ({
 
   return (
     <div
-      className=" absolute top-0 right-0 bottom-0 left-0 w-full h-full cursor-ew-resize select-none"
+      className="absolute top-0 right-0 bottom-0 left-0 w-full h-full cursor-ew-resize select-none"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
     >

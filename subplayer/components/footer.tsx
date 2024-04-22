@@ -50,8 +50,6 @@ const Footer = ({ className, player, ...restProps }: Props) => {
     <div className={clsx("relative flex flex-col", className)}>
       {player && (
         <>
-          <Progress {...restProps} player={player} />
-          <Duration {...restProps} player={player} />
           <Waveform {...restProps} player={player} setRender={setRender} />
           <Grab {...restProps} player={player} />
           <Metronome {...restProps} player={player} render={render} />

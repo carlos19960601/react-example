@@ -27,5 +27,6 @@ export const Logo = ({
       )}
     </>
   );
+
   return <div className="flex">{content}</div>;
 };

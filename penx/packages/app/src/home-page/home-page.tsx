@@ -3,7 +3,7 @@ import { Logo } from "../components/logo";
 export function HomePage() {
   return (
     <div className="fixed bg-white flex flex-col gap-4">
-      <div>
+      <div className="">
         <Logo size={32} />
       </div>
       <div className="">
