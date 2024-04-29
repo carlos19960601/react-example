@@ -8,7 +8,7 @@ pnpm install prisma --save-dev
 pnpx prisma init
 ```
 
-生成 Prisma Client.
+生成数据库模型
 ```
-pnpx prisma db pull
+pnpx prisma migrate dev --name init
 ```
