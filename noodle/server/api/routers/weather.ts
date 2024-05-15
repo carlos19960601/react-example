@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
@@ -6,7 +7,6 @@ const input = z.object({
     latitude: z.number(),
     longitude: z.number(),
 })
-
 
 
 const weatherDataSchema = z.object({
@@ -40,10 +40,52 @@ const timeseriesSchema = z.array(
 );
 
 
+const getCurrentWeatherData = async ({
+    latitude,
+    longitude,
+}: z.infer<typeof input>) => {
+    const date = new Date().toISOString().slice(0, 10);
+    const response = await fetch(
+        `https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${latitude}&lon=${longitude}`,
+        {
+            headers: {
+                "User-Agent": `noodle.run (https://github.com/noodle-run/noodle)`,
+            },
+        },
+    );
+
+    const data = (await response.json()) as {
+        properties: { timeseries: unknown };
+    };
+
+    const timeseries = timeseriesSchema
+        .parse(data.properties.timeseries as z.infer<typeof timeseriesSchema>)
+        .filter((one) => one.time.includes(date));
+
+    const temperatures = timeseries.map(
+        (t) => t.data.instant.details.air_temperature,
+    );
+
+    let summary;
+    if (timeseries[0]) {
+        const { next_12_hours, next_6_hours, next_1_hours } = timeseries[0].data;
+        const nextData = next_12_hours ?? next_6_hours ?? next_1_hours;
+        summary = nextData?.summary.symbol_code;
+    }
+
+    const weatherData = {
+        summary,
+        temp_max: Math.max(...temperatures),
+        temp_min: Math.min(...temperatures),
+    };
+
+    return weatherDataSchema.parse(weatherData);
+};
+
+
 export const weatherRouter = createTRPCRouter({
     getWeatherData: publicProcedure.input(input).output(weatherDataSchema).query(async ({ input, ctx }) => {
-        console.log("11111111")
-        // const date = new Date().toISOString().slice(0, 10);
+        const date = new Date().toISOString().slice(0, 10);
         // const cacheKey = `weather:${date}:${ctx.auth?.userId}`;
 
         // if (typeof ctx.redis !== "undefined" && typeof ctx.redis != "string") {
@@ -62,20 +104,15 @@ export const weatherRouter = createTRPCRouter({
         // }
 
 
-        // try {
-        //     return getCurrentWeatherData(input);
-        // } catch (error) {
-        //     throw new TRPCError({
-        //         code: "INTERNAL_SERVER_ERROR",
-        //         message: "Failed to fetch weather data",
-        //     });
-        // }
-
-        return {
-            summary: "dsaad",
-            temp_max: 10,
-            temp_min: 0
+        try {
+            return getCurrentWeatherData(input);
+        } catch (error) {
+            throw new TRPCError({
+                code: "INTERNAL_SERVER_ERROR",
+                message: "Failed to fetch weather data",
+            });
         }
+
     }),
 
 });

@@ -23,8 +23,6 @@ export const WeatherData: FC = () => {
     }
   );
 
-  const { data } = trpc.test.getData.useQuery();
-
   if (isLoading) {
     return (
       <div>
