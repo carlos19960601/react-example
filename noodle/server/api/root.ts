@@ -1,10 +1,10 @@
 
-import { testRouter } from "./routers/test"
+import { waitlistRouter } from "./routers/waitlist"
 import { weatherRouter } from "./routers/weather"
 import { createTRPCRouter } from "./trpc"
 
 export const appRouter = createTRPCRouter({
-    test: testRouter,
+    waitlist: waitlistRouter,
     weather: weatherRouter,
 
 

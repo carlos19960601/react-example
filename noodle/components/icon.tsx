@@ -16,3 +16,6 @@ export const Icon: React.FC<Props> = ({ name, color, size, strokeWidth }) => {
 
   return <LucideIcon strokeWidth={strokeWidth} color={color} size={size} />;
 };
+
+export type IconNames = keyof typeof icons;
+export const iconNames = Object.keys(icons) as IconNames[];
