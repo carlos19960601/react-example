@@ -8,11 +8,10 @@ import { Table } from "react-virtualized";
 
 type Props = {
   subtitles: Array<Sub>;
-  className?: string;
   updateSub: (sub: Sub, newSub: Partial<Sub>) => void;
 };
 
-const Subtitles = ({ subtitles, updateSub, className }: Props) => {
+const Subtitles = ({ subtitles, updateSub }: Props) => {
   const [height, setHeight] = useState(100);
 
   const resize = useCallback(() => {
@@ -27,7 +26,7 @@ const Subtitles = ({ subtitles, updateSub, className }: Props) => {
   }, [resize]);
 
   return (
-    <div className={clsx("relative", className)}>
+    <div className={clsx("relative", "w-[250px]")}>
       <Table
         headerHeight={40}
         width={250}

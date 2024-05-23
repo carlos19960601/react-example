@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/react": "^2.3.6",
     "clsx": "^2.1.0",
     "duration-time-conversion": "^1.0.6",
+    "framer-motion": "^11.2.6",
     "lodash": "^4.17.21",
+    "lucide": "^0.379.0",
     "next": "14.1.4",
     "next-intl": "^3.9.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-textarea-autosize": "^8.5.3",
     "react-virtualized": "^9.22.5",
     "wfplayer": "^2.2.7"
   },
@@ -26,7 +30,6 @@
     "@types/react-dom": "^18",
     "@types/react-virtualized": "^9.21.29",
     "autoprefixer": "^10.0.1",
-    "daisyui": "^4.7.3",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
     "postcss": "^8",

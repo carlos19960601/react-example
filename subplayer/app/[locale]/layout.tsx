@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider, useMessages } from "next-intl";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { NextIntlClientProvider, useMessages } from "next-intl";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,10 @@ export default function RootLayout({
   // Receive messages provided in `i18n.ts`
   const messages = useMessages();
   return (
-    <html lang={locale}>
+    <html lang={locale} className="dark">
       <body className={inter.className}>
         <NextIntlClientProvider messages={messages}>
-          {children}
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>

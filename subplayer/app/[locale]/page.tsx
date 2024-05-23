@@ -3,9 +3,8 @@
 import Footer from "@/components/footer";
 import Player from "@/components/player";
 import Subtitles from "@/components/subtitles";
-import Tool from "@/components/tool";
 import Sub from "@/libs/sub";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import WFPlayer from "wfplayer";
 
 export default function Home() {
@@ -14,6 +13,7 @@ export default function Home() {
   const [currentTime, setCurrentTime] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [waveform, setWaveform] = useState<WFPlayer | undefined>();
+  const [currentIndex, setCurrentIndex] = useState(-1);
 
   const newSub = useCallback((item: Partial<Sub>) => new Sub(item), []);
   const hasSub = useCallback((sub: Sub) => subtitles.indexOf(sub), [subtitles]);
@@ -38,7 +38,6 @@ export default function Home() {
       const subs = copySubs();
       subs.splice(index, 0, formatSub(sub) as Sub);
       setSubtitles(subs);
-      console.log(subs);
     },
     [copySubs, setSubtitles, formatSub]
   );
@@ -58,6 +57,13 @@ export default function Home() {
     [hasSub, copySubs, setSubtitles, formatSub]
   );
 
+  useMemo(() => {
+    const currentIndex = subtitles.findIndex(
+      (item) => item.startTime <= currentTime && item.endTime > currentTime
+    );
+    setCurrentIndex(currentIndex);
+  }, [currentTime, subtitles]);
+
   const props = {
     playing,
     player,
@@ -72,17 +78,18 @@ export default function Home() {
     hasSub,
     addSub,
     updateSub,
+    currentIndex,
+    setCurrentIndex,
   };
 
   return (
-    <div className="flex flex-col w-screen h-screen bg-slate-800 text-white">
+    <div className="flex flex-col w-screen h-screen">
       {/* tailwind中使用calc */}
       <div className="flex flex-1">
         <Player {...props} />
-        <Subtitles {...props} className="w-[250px]" />
-        <Tool className="w-[300px]" />
+        <Subtitles {...props} />
       </div>
-      <Footer className="h-48" {...props} />
+      <Footer {...props} />
     </div>
   );
 }

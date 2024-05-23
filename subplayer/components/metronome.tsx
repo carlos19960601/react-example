@@ -1,12 +1,12 @@
+import Sub from "@/libs/sub";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
 import { RenderProps } from "./footer";
 // @ts-ignore
 import DT from "duration-time-conversion";
 import { useTranslations } from "next-intl";
-import Sub from "@/libs/sub";
 
 interface Props {
-  player: HTMLVideoElement;
+  player: HTMLVideoElement | null;
   playing: boolean;
   render: RenderProps;
   addSub: (index: number, sub: Sub) => void;
@@ -64,7 +64,7 @@ const Metronome = ({
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
       if (isDroging) {
-        if (playing) player.pause();
+        if (playing) player!.pause();
         setDrogEndTime(getEventTime(e));
       }
     },
@@ -95,7 +95,7 @@ const Metronome = ({
     setIsDroging(false);
     setDrogStartTime(0);
     setDrogEndTime(0);
-  }, [isDroging, drogStartTime, drogEndTime, subtitles, addSub, newSub]);
+  }, [isDroging, drogStartTime, drogEndTime, subtitles, addSub, newSub, t]);
 
   useEffect(() => {
     document.addEventListener("mouseup", onDocumentMouseUp);
@@ -104,7 +104,7 @@ const Metronome = ({
 
   return (
     <div
-      className="absolute top-0 right-0 bottom-0 left-0 w-full h-full cursor-ew-resize select-none"
+      className="absolute top-0 right-0 bottom-0 left-0 w-full h-full cursor-ew-resize select-none z-10"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
     >
