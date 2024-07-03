@@ -10,10 +10,20 @@ export interface TranscriberData {
     chunks: { text: string; timestamps: [number, number | null] }[];
 }
 
+interface ProgressItem {
+    file: string;
+    loaded: number;
+    progress: number;
+    total: number;
+    name: string;
+    status: string;
+}
+
 export interface Transcriber {
     onInputChange: () => void;
     isBusy: boolean;
     isModelLoading: boolean;
+    progressItems: ProgressItem[];
     model: string;
     setModel: (model: string) => void;
 
@@ -30,16 +40,25 @@ interface TranscriberCompleteData {
 }
 
 
-
 export function useTranscriber(): Transcriber {
     const [transcript, setTranscript] = useState<TranscriberData>()
     const [isBusy, setIsBusy] = useState(false)
     const [isModelLoading, setIsModelLoading] = useState(false)
     const [model, setModel] = useState<string>(Constants.DEFAULT_MODEL);
+    const [progressItems, setProgressItems] = useState<ProgressItem[]>([]);
 
     const webWorker = useWorker((event) => {
         const message = event.data;
         switch (message.status) {
+            case "progress":
+                setProgressItems((prev) => prev.map(item => {
+                    if (item.file === message.file) {
+                        return { ...item, progress: message.progress }
+                    }
+
+                    return item
+                }))
+                break
             case "complete":
                 const completeMessage = message as TranscriberCompleteData
                 setTranscript({
@@ -49,11 +68,26 @@ export function useTranscriber(): Transcriber {
                 })
                 setIsBusy(false)
                 break;
+            case "ready":
+                setIsModelLoading(false);
+                break;
+            case "initiate":
+                setProgressItems((prev) => [...prev, message])
+                setIsModelLoading(true);
+                break
+            case "done":
+                // 模型加载完成，移除页面显示
+                setProgressItems((prev) =>
+                    prev.filter((item) => item.file !== message.file),
+                );
+                break;
             case "error":
                 setIsBusy(false);
                 alert(
                     `${message.data.message} This is most likely because you are using Safari on an M1/M2 Mac. Please try again from Chrome, Firefox, or Edge.\n\nIf this is not the case, please file a bug report.`,
                 );
+                break;
+            default:
                 break;
         }
 
@@ -95,12 +129,13 @@ export function useTranscriber(): Transcriber {
             onInputChange,
             isBusy,
             isModelLoading,
+            progressItems,
             model,
             setModel,
             output: transcript,
             start: postRequest,
         }
-    }, [onInputChange, isBusy, isModelLoading, model, setModel, transcript, postRequest])
+    }, [onInputChange, isBusy, isModelLoading, progressItems, model, setModel, transcript, postRequest])
 
     return transcriber
 }

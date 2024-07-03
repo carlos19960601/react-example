@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button, Spinner } from "@nextui-org/react";
 import { ButtonHTMLAttributes } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -17,8 +17,15 @@ const TranscribeButton = (props: Props) => {
           onClick(event);
         }
       }}
+      color="primary"
     >
-      Transcribe Audio
+      {isModelLoading ? (
+        <Spinner label="Loading model..." />
+      ) : isTranscribing ? (
+        <Spinner label="Transcribing..." />
+      ) : (
+        "Transcribe Audio"
+      )}
     </Button>
   );
 };

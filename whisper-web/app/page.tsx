@@ -1,6 +1,7 @@
 "use client";
 
 import AudioManager from "@/components/AudioManager";
+import Transcript from "@/components/Transcript";
 import { useTranscriber } from "@/hooks/useTranscriber";
 import Link from "next/link";
 
@@ -16,6 +17,7 @@ export default function Home() {
           ML-powered speech recognition directly in your browser
         </h2>
         <AudioManager transcriber={transcriber} />
+        <Transcript transcribedData={transcriber.output} />
       </div>
       <div className="absolute bottom-4">
         Made with{" "}

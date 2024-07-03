@@ -1,4 +1,3 @@
-"use client";
 import { Transcriber } from "@/hooks/useTranscriber";
 import Constants from "@/utils/Constants";
 import {
@@ -37,10 +36,25 @@ const AudioManager = (props: { transcriber: Transcriber }) => {
 
   const isAudioLoading = progress !== undefined;
 
+  const setAudioFromDownload = async (data: ArrayBuffer, mimeType: string) => {
+    const audioCtx = new AudioContext({ sampleRate: Constants.SAMPLING_RATE });
+    const blobUrl = URL.createObjectURL(new Blob([data], { type: "audio/*" }));
+
+    const decoded = await audioCtx.decodeAudioData(data);
+
+    setAudioData({
+      buffer: decoded,
+      url: blobUrl,
+      source: AudioSource.URL,
+      mimeType: mimeType,
+    });
+  };
+
   const downloadAudioFromUrl = useCallback(
     async (requestAbortController: AbortController) => {
       if (audioDownloadUrl) {
         try {
+          setAudioData(undefined);
           setProgress(0);
           const { data, headers } = (await axios.get(audioDownloadUrl, {
             signal: requestAbortController.signal,
@@ -57,6 +71,7 @@ const AudioManager = (props: { transcriber: Transcriber }) => {
           if (!mimeType || mimeType === "audio/wave") {
             mimeType = "audio/wav";
           }
+          setAudioFromDownload(data, mimeType);
         } catch (error) {
           console.log("Request failed or aborted", error);
         } finally {
@@ -109,7 +124,7 @@ const AudioManager = (props: { transcriber: Transcriber }) => {
       {audioData && (
         <>
           <AudioPlayer audioUrl={audioData.url} mimeType={audioData.mimeType} />
-          <div>
+          <div className="relative w-full flex justify-center items-center">
             <TranscribeButton
               onClick={() => {
                 props.transcriber.start(audioData.buffer);
@@ -117,7 +132,22 @@ const AudioManager = (props: { transcriber: Transcriber }) => {
               isModelLoading={props.transcriber.isModelLoading}
               isTranscribing={props.transcriber.isBusy}
             />
+            <SettingTile
+              className="absolute right-4"
+              transcriber={props.transcriber}
+              icon={<SettingsIcon />}
+            />
           </div>
+          {props.transcriber.progressItems.length > 0 && (
+            <div className="relative z-10 p-4 w-full">
+              <label> Loading model files... (only run once)</label>
+              {props.transcriber.progressItems.map((data) => (
+                <div key={data.file}>
+                  <Progress value={data.progress} label={data.file} size="sm" />
+                </div>
+              ))}
+            </div>
+          )}
         </>
       )}
     </>
