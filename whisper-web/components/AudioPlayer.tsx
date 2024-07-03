@@ -5,7 +5,6 @@ const AudioPlayer = (props: { audioUrl: string; mimeType: string }) => {
   const audioSource = useRef<HTMLSourceElement>(null);
 
   useEffect(() => {
-    console.log(props.audioUrl);
     if (audioPlayer.current && audioSource.current) {
       audioSource.current.src = props.audioUrl;
       audioPlayer.current.load();

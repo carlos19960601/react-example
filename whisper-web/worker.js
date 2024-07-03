@@ -61,7 +61,15 @@ const transcribe = async (audio, model) => {
     self.postMessage(data);
   });
 
-  let output = await transcriber(audio, {}).catch((error) => {
+  function chunk_callback(chunk) {}
+
+  let output = await transcriber(audio, {
+    // 时间戳
+    return_timestamps: true,
+    force_full_sequences: false,
+
+    chunk_callback: chunk_callback,
+  }).catch((error) => {
     self.postMessage({
       status: "error",
       task: "automatic-speech-recognition",

@@ -7,7 +7,7 @@ import { useWorker } from "./useWorker";
 export interface TranscriberData {
     isBusy: boolean;
     text: string;
-    chunks: { text: string; timestamps: [number, number | null] }[];
+    chunks: { text: string; timestamp: [number, number | null] }[];
 }
 
 interface ProgressItem {
@@ -35,7 +35,7 @@ export interface Transcriber {
 interface TranscriberCompleteData {
     data: {
         text: string;
-        chunks: { text: string; timestamps: [number, number | null] }[];
+        chunks: { text: string; timestamp: [number, number | null] }[];
     }
 }
 
@@ -60,6 +60,7 @@ export function useTranscriber(): Transcriber {
                 }))
                 break
             case "complete":
+                console.log("complete", message)
                 const completeMessage = message as TranscriberCompleteData
                 setTranscript({
                     isBusy: false,
